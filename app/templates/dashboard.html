@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IT Trend Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+<div class="max-w-6xl mx-auto p-6">
+
+  <h1 class="text-3xl font-bold mb-6 text-center">🚀 IT Trend Intelligence Dashboard</h1>
+
+  <div id="lastUpdated" class="text-center text-gray-400 mb-6"></div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div class="bg-gray-800 p-4 rounded-2xl shadow">
+      <h2 class="text-xl font-semibold mb-3">🔥 Trending Technologies</h2>
+      <ul id="trending"></ul>
+    </div>
+
+    <div class="bg-gray-800 p-4 rounded-2xl shadow">
+      <h2 class="text-xl font-semibold mb-3">🌱 Emerging Technologies</h2>
+      <ul id="emerging"></ul>
+    </div>
+
+    <div class="bg-gray-800 p-4 rounded-2xl shadow">
+      <h2 class="text-xl font-semibold mb-3">📉 Declining Technologies</h2>
+      <ul id="declining"></ul>
+    </div>
+
+    <div class="bg-gray-800 p-4 rounded-2xl shadow">
+      <h2 class="text-xl font-semibold mb-3">🧠 Skills to Learn</h2>
+      <ul id="skills"></ul>
+    </div>
+
+  </div>
+
+  <div class="bg-gray-800 p-4 rounded-2xl shadow mt-6">
+    <h2 class="text-xl font-semibold mb-3">📰 Latest News</h2>
+    <ul id="news"></ul>
+  </div>
+
+</div>
+
+<script>
+async function loadTrends() {
+  const res = await fetch("/trends");
+  const data = await res.json();
+
+  if (!data.analysis) return;
+
+  document.getElementById("lastUpdated").innerText =
+    "Last updated: " + new Date(data.date).toLocaleString();
+
+  function fillList(id, items) {
+    const ul = document.getElementById(id);
+    ul.innerHTML = "";
+    items.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = "• " + item;
+      ul.appendChild(li);
+    });
+  }
+
+  fillList("trending", data.analysis.top_trending_technologies || []);
+  fillList("emerging", data.analysis.emerging_technologies || []);
+  fillList("declining", data.analysis.declining_technologies || []);
+  fillList("skills", data.analysis.skills_for_backend_python_developer || []);
+  fillList("news", data.news || []);
+}
+
+// load immediately
+loadTrends()
+
+// auto refresh every 60 seconds
+setInterval(loadTrends, 60000)
+</script>
+
+</body>
+</html>
