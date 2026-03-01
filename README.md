@@ -151,3 +151,24 @@ trend_agent/
     "skills_for_backend_python_developer": []
   }
 }
+
+---
+
+📈 Future Enhancements
+Trend momentum detection (today vs yesterday)
+GitHub trending integration
+Job market skill analysis
+Time-series charts
+Personalized learning roadmap
+Multi-agent architecture
+
+---
+
+💼 Interview Pitch
+Built a fully local agentic AI system using FastAPI, MongoDB, APScheduler, and Phi-3 via Ollama that autonomously analyzes IT trends and generates structured skill recommendations with a live dashboard.
+
+---
+
+🧑‍💻 Author
+Yogjeet Singh
+Backend & AI Developer
