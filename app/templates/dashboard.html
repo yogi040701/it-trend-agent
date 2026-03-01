@@ -1003,7 +1003,36 @@
 
     // Initial load + auto refresh
     loadTrends();
-    setInterval(loadTrends, 60000);
+    // setInterval(loadTrends, 60000);
+    async function initDashboard() {
+  try {
+    const res = await fetch("/config");
+    const config = await res.json();
+
+    // update ring animation duration dynamically
+    const style = document.createElement('style');
+    style.textContent = `.progress-ring circle { animation: ring ${config.refresh_interval_seconds}s linear infinite; }`;
+    document.head.appendChild(style);
+
+    // update label text
+    document.querySelector('.refresh-info').innerHTML = `
+      <svg class="progress-ring" viewBox="0 0 14 14">
+        <circle cx="7" cy="7" r="5"/>
+      </svg>
+      AUTO-REFRESH IN ${config.refresh_label}`;
+
+    // start auto refresh
+    setInterval(loadTrends, config.refresh_interval_ms);
+
+  } catch {
+    // fallback if /config fails
+    setInterval(loadTrends, 300000);
+  }
+}
+
+// load data + init
+loadTrends();
+initDashboard();
   </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ from app.db.mongo import trends_collection
 from app.agent.trend_agent import run_trend_agent
 import httpx
 from pydantic import BaseModel
+from app.agent.scheduler import AGENT_INTERVAL_MINUTES
 
 router = APIRouter()
 
@@ -46,3 +47,11 @@ Respond with ONLY the brief text, no labels or preamble."""
         data = response.json()
         brief = data.get("response", "").strip()
         return {"brief": brief}
+
+@router.get("/config")
+async def get_config():
+    return {
+        "refresh_interval_ms": AGENT_INTERVAL_MINUTES * 60 * 1000,  # to milliseconds
+        "refresh_interval_seconds": AGENT_INTERVAL_MINUTES * 60,    # for CSS
+        "refresh_label": f"{AGENT_INTERVAL_MINUTES} MIN" if AGENT_INTERVAL_MINUTES >= 1 else f"{AGENT_INTERVAL_MINUTES * 60} SEC"
+    }
