@@ -1,5 +1,11 @@
-.venv/
-__pycache__/
+# create .gitignore file
+echo "__pycache__/
 *.pyc
-mongodb-data/
+*.pyo
 .env
+.venv/
+venv/
+*.egg-info/
+.DS_Store
+mongodb-data/
+*.log" > .gitignore
